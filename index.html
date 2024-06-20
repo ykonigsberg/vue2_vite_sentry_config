@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script
+    src="https://browser.sentry-cdn.com/7.113.0/bundle.tracing.min.js"
+    integrity="sha384-ZrNBTovfOhFkw7ionfLEjl5voCae1GCXOcuGJB3/ucV57gs/+RxyVRPXfFhd7jwf"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://browser.sentry-cdn.com/7.113.0/captureconsole.min.js"
+    integrity="sha384-H94VNEVI1G7X5bbKxVSFigZ//BDP5XFYQrGnxeivk1WgakI45En7H9m2DSeHmcmY"
+    crossorigin="anonymous"
+  ></script>
+
+  <script>
+    Sentry.init({
+      dsn: "https://dc833b966ab24c74b407cc1005231e07@o4504514050326528.ingest.us.sentry.io/4504514051506176",
+      integrations: [Sentry.captureConsoleIntegration()],
+// If the entire session is not sampled, use the below sample rate to sample
+// sessions when an error occurs.
+    });
+  </script>
+  <script> throw new console.error('zatar');</script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>\
+    <div id="app"></div>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>

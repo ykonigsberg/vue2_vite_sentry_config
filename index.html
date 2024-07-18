@@ -4,34 +4,50 @@
   <head>
     <script>
       window.onerror = (event) => {
-        //text = `${event.type}: ${event.message}\n`;
-        //console.log(text);
-        //console.log(event)
         localStorage.setItem("unhandled_event", event)
       }
 
       window.sentryOnLoad = () => {
-        console.log('sentry was loaded')
         const unhandled_event = localStorage.getItem("unhandled_event")
-        console.log(unhandled_event)
         Sentry.captureException(unhandled_event)
         localStorage.clear()
       }
-    </script>
+    </script> 
     <script src="https://js.sentry-cdn.com/d92f7477aa04e5f9a7416ca443a90682.min.js" crossorigin="anonymous"></script>
     <script
-      src="https://browser.sentry-cdn.com/7.113.0/captureconsole.min.js"
-      integrity="sha384-H94VNEVI1G7X5bbKxVSFigZ//BDP5XFYQrGnxeivk1WgakI45En7H9m2DSeHmcmY"
-      crossorigin="anonymous"
+      src="/src/SentryOptions.js"
     ></script>
     <script> throw new Error('Error before Sentry')</script>
     <script>
       Sentry.init({
-        dsn: "https://dc833b966ab24c74b407cc1005231e07@o4504514050326528.ingest.us.sentry.io/4504514051506176",
-        integrations: [Sentry.captureConsoleIntegration()],
-        // If the entire session is not sampled, use the below sample rate to sample
-        // sessions when an error occurs.
+        dsn: DSN,
+        //integrations: [Sentry.captureConsoleIntegration()],
+        environment: "sergio-test-env",
+        replaysSessionSampleRate: SessionReplayOptions.sessionSampleRate,
+        replaysOnErrorSampleRate: SessionReplayOptions.errorSampleRate,
+        beforeSend: (event) => {
+          const user = retrieveUserIfLoggedIn();
+          if (user !== null) {
+            console.log(user)
+            Sentry.setUser({
+              email: user.email
+            })
+          }
+          return event
+        }
       });
+
+      const retrieveUserIfLoggedIn = () => {
+        return {
+          "email" : "test@example.com",
+          "locale" : "United States"
+        }
+      }
+    </script>
+    <script>
+      setTimeout( () => {
+        throw new Error("Error After Initialization")
+      }, 4000)
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />

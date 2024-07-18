@@ -3,8 +3,6 @@ import Router from "vue-router";
 import * as Sentry from "@sentry/vue";
 import App from "./App.vue";
 import router from './router';
-import axios from 'axios';
-
 // tags, release , environemt, event.extra, event.user, transport, tags 
 // add session replay config (index.html if possible)
 // we want to add the following tags to all events after the Sentry SDK is initialized
